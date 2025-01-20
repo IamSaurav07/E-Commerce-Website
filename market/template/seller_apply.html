@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Apply to be a Seller
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {% if current_user.role == 'Customer' %}
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Apply to be a Seller</h5>
+                        <form method="POST" class="register" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" value="{{ current_user.name }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="aadhar">Aadhar Number</label>
+                                {{ form.aadhar(class="form-control", placeholder="Enter Aadhar Number") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Profile Picture</label>
+                                {{ form.image(class="form-control-file") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-success mt-5" role="alert">
+                    <h4 class="alert-heading">Congratulations!</h4>
+                    <p>You are already a seller.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

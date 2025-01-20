@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Address 
+{%endblock%}
+
+{% block content %}
+    <body class="text-center" style="align-items: center;">
+    <div class="container" style="width: 500px; margin-top: 50px;;">
+        <h1>Add Address</h1>
+            <form method="POST" class="register" style="color:white" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <br>
+                {{form.line1.label}}
+                {{form.line1(class="form-control", placeholder="Line 1")}}
+                <br>
+                {{form.line2.label}}
+                {{form.line2(class="form-control", placeholder="Line 2")}}
+                <br>
+                {{form.landmark.label}}
+                {{form.landmark(class="form-control", placeholder="Landmark")}}
+                <br>
+                {{form.city.label}}
+                {{form.city(class="form-control", placeholder="City")}}
+                <br>
+                {{form.state.label}}
+                {{form.state(class="form-control", placeholder="State")}}
+                <br>
+                {{form.country.label}}
+                {{form.country(class="form-control", placeholder="Country")}}
+                <br>
+                {{form.pincode.label}}
+                {{form.pincode(class="form-control", placeholder="Pincode")}}
+                <br>
+                <br>
+
+                {{form.submit(class="btn btn-lg btn-block btn-primary")}}
+                <br>
+            </form>
+    
+    </div>
+{%endblock%}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block css_files %}
+{{ super() }}
+    <style>
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .product-details {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .product-description {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #343a40;
+        }
+
+        .product-price {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #007bff;
+        }
+
+        .sold-by {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #6c757d;
+        }
+
+        .quantity-select {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #343a40;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .add-to-cart-btn {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .remove-item-btn {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+
+        }
+    </style>
+{% endblock %}
+
+{%block search_bar %}
+<form class="form-inline my-2 my-lg-0" action="{{url_for('search_results')}}" method="GET">
+  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card product-details">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="product-image" src="/static/products/{{ product.image_url }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="col-md-8">
+                        <h2 class="product-title">{{ product.name }}</h2>
+                        <p class="product-description">{{ product.description }}</p>
+                        <p class="product-price"><strong>Price:</strong> Rs. {{ product.price }}</p>
+                        <p class="sold-by"><strong>Sold By:</strong> {{ seller.name }}</p>
+                        <label for="quantity" class="sold-by"><strong>Quantity:</strong></label>
+                        <select id="quantity" class="quantity-select"></select>
+                        <br>
+                        <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                        {% if (current_user.id == product.seller) or (current_user.role == 'Admin') %}
+                            <button class="remove-item-btn">
+                                <a href="/delete/{{product.id}}" class="card-link" style="color:white; text-decoration:none">Remove item</a>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var quantityDropdown = document.getElementById('quantity');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Populate quantity dropdown
+    console.log(1);
+    for (var i = 1; i <= 10; i++) {
+        var option = document.createElement('option');
+        option.text = i;
+        option.value = i;
+        quantityDropdown.appendChild(option);
+    }
+    });
+
+    // Add to cart function
+    // function addToCart() {
+    //     console.log(1);
+    //     if ('{{ current_user.is_authenticated }}' == 'False') {
+    //         window.location.href = '/not_logged_in';
+    //     } 
+    //     else {
+    //         console.log(2);
+    //         var userId = {{ current_user.id }};
+    //         var productId = {{ product.id }};
+    //         var selectedQuantity = quantityDropdown.value;
+    //         window.location.href = '/add_to_cart/' + userId + '/' + productId + '/' + selectedQuantity;
+    //     }
+    // }
+
+    function addToCart() {
+    console.log(1);
+    {% if current_user.is_authenticated %}
+        console.log(2);
+        var userId = {{ current_user.id }};
+        var productId = {{ product.id }};
+        var selectedQuantity = quantityDropdown.value;
+        window.location.href = '/add_to_cart/' + userId + '/' + productId + '/' + selectedQuantity;
+    {% else %}
+        window.location.href = '/not_logged_in';
+    {% endif %}
+}
+
+</script>
+{% endblock %}
+

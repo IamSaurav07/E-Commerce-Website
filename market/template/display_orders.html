@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Orders
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Past Orders</h1>
+    <div class="accordion" id="ordersAccordion">
+        {% for order in order_items %}
+            <div class="card">
+                <div class="card-header" id="order{{ loop.index }}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                            Order Date: <span class="order-date">{{ order['order_date'] }}</span> | Total: Rs.{{ order['total_price'] }}
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="order{{ loop.index }}" data-parent="#ordersAccordion">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for item in order['items'] %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="media">
+                                        <img src="/static/products/{{ item.image_url }}" class="mr-3" alt="{{ item.name }}" style="max-width: 100px;">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">{{ item.name }}</h5>
+                                            <p>Quantity: {{ item.quantity }}</p>
+                                            <p>Price: Rs.{{ item.item_price }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block css_files %}
+{{ super() }}
+<style>
+    .card-header {
+        background-color: #f8f9fa;
+    }
+
+    .order-date {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

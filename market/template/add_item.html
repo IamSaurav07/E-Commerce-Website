@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register
+{%endblock%}
+
+{% block content %}
+<body class="text-center" style="align-items: center;">
+    {% if current_user.role == 'Seller' or current_user.role == 'Admin'%}
+    <div class="container" style="width: 500px; margin-top: 50px;;">
+        <h1>Apply</h1>
+            <form method="POST" class="register" style="color:white" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <br>
+                {{form.name.label()}}
+                {{form.name(class="form-control", placeholder="Item name")}}
+
+                <br>
+
+                {{form.price.label()}}
+                {{form.price(class="form-control", placeholder="Item price")}}
+
+                <br>
+
+                {{form.description.label()}}
+                {{form.description(class="form-control", placeholder="Item description")}}
+
+                <br>
+
+                {{form.image.label()}}
+                <br>
+                {{form.image(placeholder="Item image")}}
+            
+                <br>
+                <br>
+
+                {{form.submit(class="btn btn-lg btn-block btn-primary")}}
+                <br>
+            </form>
+    
+    </div>
+{%endif%}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log(1);
+        if('{{current_user.role}}' != 'Seller')
+            window.location.href = '/';
+});
+</script>
+</body>
+
+{% endblock %}
