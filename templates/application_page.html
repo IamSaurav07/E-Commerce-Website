@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Application - {{seller.name}}
+{% endblock %}
+
+{% block css_files %}
+{{ super() }}
+    <style>
+        .box1 {
+            background-color: red;
+            max-width: 50%;
+            height: 100%;
+        }
+        .box2 {
+            background-color: blue;
+            max-width: 50%;
+            margin-top: 5%;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: 80vh;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+{% if current_user.role == 'Admin' %}
+<div class="card my-6 mx-auto rounded" style="max-width: 50%; margin-top: 5rem; border: 1px solid black; color: black;">
+    <div class="row g-0">
+        <div class="col-md-4 rounded">
+            <img style="width: 100%; margin-top: 10%; margin-left: 10%;" src="/static/profile/{{seller.image_path}}" class="img-fluid rounded-start">
+        </div>
+        <div class="col-md-8 rounded">
+            <div class="card-body rounded">
+                <h5 class="card-title mt-4 mb-4">{{ seller.name }}</h5>
+                <div class="card-text mt-4 mb-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Aadhar no.: </strong> Rs. {{ seller.aadhar }}</li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-success btn-sm mr-2">
+                        <a href="/application/approve/{{seller.id}}" class="card-link" style="color:white; text-decoration:none">Approve</a>
+                      </button>
+                      <br>
+                      <br>
+                    <button type="button" class="btn btn-danger btn-sm">
+                        <a href="/application/disapprove/{{seller.id}}" class="card-link" style="color:white; text-decoration:none">Deny</a>
+                      </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endif%}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if('{{current_user.role}}' != 'Admin')
+            window.location.href = '/';
+});
+</script>
+{% endblock %}
+
